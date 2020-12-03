@@ -66,6 +66,18 @@
         state: present
       loop: "{{ modsapache }}"
       notify: restart apache
+    - name: 'Ajuste de permissão da aplicação para usuário www-data'
+      file:
+        path: /srv/www/express
+        state: directory
+        recurse: yes
+        owner: "{{ app_user }}"
+        group: "{{ app_user }}"
+    - name: 'Ajuste de ip de conexão com o banco errado'
+      replace:
+        path: /srv/www/express/backup.php
+        regexp: '172\.17\.177\.101'
+        replace: '172.17.177.102'
   
   handlers:
     - name: 'restart apache'
