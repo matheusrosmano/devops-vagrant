@@ -4,7 +4,7 @@
   vars:
     modsapache:
       - php7.0
-      - vhost_aliases
+      - vhost_alias
   vars_files:
     - vars/default.yml
   tasks:
