@@ -56,6 +56,11 @@
     - name: 'Habilita configuração do direxpress'
       shell: /usr/sbin/a2enconf direxpress.conf
       notify: restart apache
+    - name: 'Habilitar modulo do virtualhost'
+      apache2_module:
+        name: vhost_aliases
+        state: present
+      notify: restart apache
   
   handlers:
     - name: 'restart apache'
