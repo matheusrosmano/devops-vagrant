@@ -58,8 +58,11 @@
       notify: restart apache
     - name: 'Habilitar modulo do virtualhost'
       apache2_module:
-        name: vhost_aliases
+        name: "{{ item }}"
         state: present
+      loop:
+        - php7.0
+        - vhost_aliases
       notify: restart apache
   
   handlers:
