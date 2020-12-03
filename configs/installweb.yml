@@ -1,6 +1,10 @@
 ---
 - hosts: intranet
   become: true
+  vars:
+    modsapache:
+      - php7.0
+      - vhost_aliases
   vars_files:
     - vars/default.yml
   tasks:
@@ -60,9 +64,7 @@
       apache2_module:
         name: "{{ item }}"
         state: present
-      loop:
-        - php7.0
-        - vhost_aliases
+      loop: "{{ modsapache }}"
       notify: restart apache
   
   handlers:
