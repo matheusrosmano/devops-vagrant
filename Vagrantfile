@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     end
     web.vm.provision "shell", path: "provision01"
     web.vm.synced_folder "./configs", "/var/configs", owner: "root", group: "root"
-  end  
+  end
 
   config.vm.define "db" do |db|
     db.vm.box = "geerlingguy/debian9"
@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     end
     db.vm.provision "shell", path: "provision01"
     db.vm.synced_folder "./configs", "/var/configs", owner: "root", group: "root"
-  end  
+  end
 
   config.vm.define "master" do |master|
     master.vm.box = "centos/8"
@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
       vb.gui = false
       vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
     end
-  end  
+  end
 
   (1..3).each do |i|
     config.vm.define "node#{i}" do |node|
