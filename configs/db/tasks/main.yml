@@ -1,7 +1,5 @@
 ---
-- hosts: datacenter
-  become: true
-  tasks:
+# tasks file for db
     - name: 'Instalação dos pacotes para banco de dados'
       apt:
         pkg:
@@ -46,9 +44,3 @@
         regexp: '127\.0\.0\.1'
         replace: '0.0.0.0'
       notify: restart mysql
-  handlers:
-    - name: 'restart mysql'
-      service:
-        name: mysql
-        state: restarted
-        enabled: yes
