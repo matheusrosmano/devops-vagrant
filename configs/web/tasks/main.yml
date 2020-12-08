@@ -1,13 +1,5 @@
 ---
-- hosts: intranet
-  become: true
-  vars:
-    modsapache:
-      - php7.0
-      - vhost_alias
-  vars_files:
-    - vars/default.yml
-  tasks:
+# tasks file for web
     - name: 'Instalação de pacotes da aplicação'
       apt:
         pkg:
@@ -78,9 +70,3 @@
         path: /srv/www/express/backup.php
         regexp: '172\.17\.177\.101'
         replace: '172.17.177.102'
-  
-  handlers:
-    - name: 'restart apache'
-      service:
-        name: apache2
-        state: restarted
