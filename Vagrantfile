@@ -86,6 +86,8 @@ Vagrant.configure("2") do |config|
       vb.gui = false
       vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
     end
+    pupmaster.vm.provision "shell", inline: "apt update -y && apt install -y puppet"
+    pupmaster.vm.synced_folder "./manifests", "/home/vagrant/puppet", owner: "vagrant", group: "vagrant"
   end
 
   config.vm.define "pupagent" do |pupagent|
