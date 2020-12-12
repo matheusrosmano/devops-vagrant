@@ -76,7 +76,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "pupmaster" do |pupmaster|
-    pupmaster.vm.box = "centos/8"
+    pupmaster.vm.box = "debian/buster64"
     pupmaster.vm.network "private_network", ip: "172.17.177.105"
     pupmaster.vm.hostname = "pupmaster"
     pupmaster.vm.provider "virtualbox" do |vb|
