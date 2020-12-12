@@ -3,7 +3,7 @@
 
 Vagrant.configure("2") do |config|
   config.vm.define "controle" do |controle|
-    controle.vm.box = "geerlingguy/debian9"
+    controle.vm.box = "debian/buster64"
     controle.vm.network "private_network", ip: "172.17.177.100"
     controle.vm.hostname = "controle"
     controle.vm.provider "virtualbox" do |vb|
@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "web" do |web|
-    web.vm.box = "geerlingguy/debian9"
+    web.vm.box = "debian/buster64"
     web.vm.network "private_network", ip: "172.17.177.101"
     web.vm.hostname = "web"
     web.vm.provider "virtualbox" do |vb|
@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "db" do |db|
-    db.vm.box = "geerlingguy/debian9"
+    db.vm.box = "debian/buster64"
     db.vm.network "private_network", ip: "172.17.177.102"
     db.vm.hostname = "db"
     db.vm.provider "virtualbox" do |vb|
@@ -72,6 +72,40 @@ Vagrant.configure("2") do |config|
         vb.cpus = 1
         vb.gui = false
       end
+    end
+  end
+
+  config.vm.define "pupmaster" do |pupmaster|
+    pupmaster.vm.box = "centos/8"
+    pupmaster.vm.network "private_network", ip: "172.17.177.105"
+    pupmaster.vm.hostname = "pupmaster"
+    pupmaster.vm.provider "virtualbox" do |vb|
+      vb.name = "pupmaster"
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.gui = false
+      vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
+    end
+  end
+
+  config.vm.define "pupagent" do |pupagent|
+    pupagent.vm.box = "debian/buster64"
+    pupagent.vm.network "private_network", ip: "172.17.177.106"
+    pupagent.vm.hostname = "pupagent"
+    pupagent.vm.provider "virtualbox" do |vb|
+      vb.name = "pupagent"
+      vb.memory = "512"
+      vb.cpus = 1
+      vb.gui = false
+      vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
+    end
+    # pupagent.vm.provision "shell", inline: "apt update -y && apt install -y puppet"
+
+    pupagent.vm.synced_folder "./manifests", "/home/vagrant/puppet", owner: "vagrant", group: "vagrant"
+
+    pupagent.vm.provision "puppet" do |puppet|
+        puppet.manifests_path = "manifests"
+        puppet.manifest_file = "default.pp"
     end
   end
 end
