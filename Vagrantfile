@@ -76,7 +76,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "pupmaster" do |pupmaster|
-    pupmaster.vm.box = "debian/buster64"
+    pupmaster.vm.box = "centos/7"
     pupmaster.vm.network "private_network", ip: "172.17.177.105"
     pupmaster.vm.hostname = "pupmaster"
     pupmaster.vm.provider "virtualbox" do |vb|
@@ -86,7 +86,7 @@ Vagrant.configure("2") do |config|
       vb.gui = false
       vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
     end
-    pupmaster.vm.provision "shell", inline: "apt update -y && apt install -y puppet"
+    pupmaster.vm.provision "shell", inline: "yum update -y && yum install -y puppet"
     pupmaster.vm.synced_folder "./manifests", "/home/vagrant/puppet", owner: "vagrant", group: "vagrant"
   end
 
