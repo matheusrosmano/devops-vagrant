@@ -88,6 +88,7 @@ Vagrant.configure("2") do |config|
     end
     # pupmaster.vm.provision "shell", inline: "dnf update -y"
     pupmaster.vm.synced_folder "./manifests", "/home/vagrant/puppet", owner: "vagrant", group: "vagrant"
+    pupmaster.vm.synced_folder "./docker", "/home/vagrant/docker", owner: "vagrant", group: "vagrant"
   end
 
   config.vm.define "pupagent" do |pupagent|
@@ -109,5 +110,22 @@ Vagrant.configure("2") do |config|
     #     puppet.manifests_path = "manifests"
     #     puppet.manifest_file = "default.pp"
     # end
+  end
+
+  config.vm.define "docker" do |docker|
+    docker.vm.box = "debian/buster64"
+    docker.vm.network "private_network", ip: "172.17.177.116"
+    docker.vm.hostname = "docker"
+    docker.vm.provider "virtualbox" do |vb|
+      vb.name = "docker"
+      vb.memory = "512"
+      vb.cpus = 1
+      vb.gui = false
+      vb.customize ["modifyvm", :id, "--groups", "/vagrant_machines"]
+    end
+    # docker.vm.provision "shell", inline: "apt update -y && apt install -y puppet"
+
+    docker.vm.synced_folder "./docker", "/home/vagrant/docker", owner: "vagrant", group: "vagrant"
+
   end
 end
